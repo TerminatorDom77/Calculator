@@ -17,3 +17,9 @@
     display: flex;
     flex-wrap: wrap;
 }
+p {
+    float: right;
+    margin-right: 5%;
+    font-size: 20pt;
+    margin-top: 80px;
+}

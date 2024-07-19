@@ -7,24 +7,34 @@ const buttonSymbols = [
     [0, '.', 'x', '=']
 ];
 const numbers = [1,2,3,4,5,6,7,8,9,0];
-const operators = ['+', '-', '*', '/', '%', '='];
+const operators = ['+', '-', '*', '/', '='];
 const screen = document.getElementById('screen-text');
 const misc = ['C', '()', '%', 'x'];
 let operandOne = '';
 let operandTwo = '';
 let operator = null;
-let nextOperator = null;
 let operationMade = false;
+let parenthesisNum = 0;
 
 function operate(operandOne, operandTwo, operator){
+    if (operandOne.includes('.')){
+        operandOne = parseFloat(operandOne);
+    }else {
+        operandOne = parseInt(operandOne);
+    }
+    if (operandTwo.includes('.')){
+        operandTwo = parseFloat(operandTwo);
+    }else {
+        operandTwo = parseInt(operandTwo);
+    }
     if (operator == '+'){
-        return parseInt(operandOne) + parseInt(operandTwo);
+        return operandOne + operandTwo;
     }else if (operator == '-'){
-        return parseInt(operandOne) - parseInt(operandTwo);
+        return operandOne - operandTwo;
     }else if (operator == '*'){
-        return parseInt(operandOne) * parseInt(operandTwo);
+        return operandOne * operandTwo;
     } else if (operator == '/'){
-        return parseInt(operandOne) / parseInt(operandTwo);
+        return operandOne / operandTwo;
     }
 }
 
@@ -89,11 +99,23 @@ for (let row = 0; row < 5; row++){
                     operandOne = '';
                     operandTwo = '';
                     operator = null;
+                }else if (button.id == '()'){
+                    if (parenthesisNum % 2 == 0){
+                        screen.textContent += '(';
+                    }else {
+                        screen.textContent += ')';
+                    }
+                    parenthesisNum += 1;
+                    //change this parenthesis thing later or not at all maybe.
+                }else if (button.id == '%'){
+                    if (operator == null){
+                        operandOne = parseInt(operandOne) / 100;
+                        operandOne = operandOne.toString();
+                        console.log(operandOne);
+                        screen.textContent = operandOne;
+                    }
                 }else if (button.id == 'x'){
-                    console.log('test')
-                    oldText = screen.textContent;
-                    oldText.slice(0, -2);
-                    screen.textContent = oldText;
+                    screen.textContent = screen.textContent.slice(0, -1);
                 }
             });
         }

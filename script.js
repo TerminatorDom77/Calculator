@@ -9,19 +9,22 @@ const buttonSymbols = [
 const numbers = [1,2,3,4,5,6,7,8,9,0];
 const operators = ['+', '-', '*', '/', '%', '='];
 const screen = document.getElementById('screen-text');
-let operand_one = '';
-let operand_two = '';
+const misc = ['C', '()', '%', 'x'];
+let operandOne = '';
+let operandTwo = '';
 let operator = null;
+let nextOperator = null;
+let operationMade = false;
 
-function operate(operand_one, operand_two, operator){
+function operate(operandOne, operandTwo, operator){
     if (operator == '+'){
-        return parseInt(operand_one) + parseInt(operand_two);
+        return parseInt(operandOne) + parseInt(operandTwo);
     }else if (operator == '-'){
-        return parseInt(operand_one) - parseInt(operand_two);
+        return parseInt(operandOne) - parseInt(operandTwo);
     }else if (operator == '*'){
-        return parseInt(operand_one) * parseInt(operand_two);
+        return parseInt(operandOne) * parseInt(operandTwo);
     } else if (operator == '/'){
-        return parseInt(operand_one) - parseInt(operand_two);
+        return parseInt(operandOne) / parseInt(operandTwo);
     }
 }
 
@@ -40,36 +43,57 @@ for (let row = 0; row < 5; row++){
                 if (screen.textContent == ''){
                     screen.textContent = text;
                 }else {
-                    if (operand_two == '') {
+                    if (operandTwo != '' && operationMade == true){
+                        screen.textContent = text;
+                        operandOne = '';
+                        operandTwo = '';
+                        operator = null;
+                        operationMade = false;
+                    }else if (operationMade == false) {
                         screen.textContent += text;
                     }else {
                         screen.textContent = text;
-                        operand_one = '';
-                        operand_two = '';
-                        operator = null;
                     }
+
                 }
                 if (operator == null){
-                    operand_one += text.toString();
+                    operandOne += text.toString();
                 }else {
-                    operand_two += text.toString();
+                    operandTwo += text.toString();
                 }
             });
         }else if (operators.includes(button.id)){
             button.addEventListener('click', () => {
-                if (operand_one == ''){
+                if (operandOne == ''){
                     alert('Enter a number before an operator');
                 } else if(button.id != '=') {
                     screen.textContent += ' ' + button.id + ' ';
-                    if (operator != '' && operand_one != '' && operand_two != ''){
-                        screen.textContent = operate(operand_one, operand_two, operator);
-                        operand_one = operate(operand_one, operand_two, operator);
-                        operand_two = '';
+                    if (operator != '' && operandOne != '' && operandTwo != ''){
+                        screen.textContent = operate(operandOne, operandTwo, operator);
+                        operandOne = operate(operandOne, operandTwo, operator);
+                        operationMade = true;
+                        operandTwo = '';
+                        operator = button.id;
                     }else {
                         operator = button.id;
                     }
                 } else {
-                    screen.textContent = operate(operand_one, operand_two, operator);
+                    screen.textContent = operate(operandOne, operandTwo, operator);
+                    operationMade = true;
+                }
+            });
+        }else {
+            button.addEventListener('click', () => {
+                if (button.id == 'C'){
+                    screen.textContent = '';
+                    operandOne = '';
+                    operandTwo = '';
+                    operator = null;
+                }else if (button.id == 'x'){
+                    console.log('test')
+                    oldText = screen.textContent;
+                    oldText.slice(0, -2);
+                    screen.textContent = oldText;
                 }
             });
         }

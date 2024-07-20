@@ -35,8 +35,8 @@ for (let row = 0; row < 5; row++){
         let button = document.createElement('button');
         button.id = buttonSymbols[row][pos];
         button.textContent = button.id;
-        button.style.flexBasis = `${25}%`;
-        button.style.fontSize = `${14}pt`
+        button.style.cssText = `flex-basis: ${96}px; font-size: ${14}pt; background-color: white;
+        border-radius: 25px; border-color: gray; border-style: outset; margin: 2px;`
         buttons.appendChild(button);
      
         if (numbers.includes(parseInt(button.id))){

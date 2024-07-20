@@ -9,7 +9,7 @@ const buttonSymbols = [
 const numbers = [1,2,3,4,5,6,7,8,9,0];
 const operators = ['+', '-', '*', '/', '='];
 const screen = document.getElementById('screen-text');
-const misc = ['C', '()', '%', 'x'];
+const misc = ['C', '()', '%', 'x', '.'];
 let operandOne = '';
 let operandTwo = '';
 let operator = null;
@@ -17,16 +17,8 @@ let operationMade = false;
 let parenthesisNum = 0;
 
 function operate(operandOne, operandTwo, operator){
-    if (operandOne.includes('.')){
-        operandOne = parseFloat(operandOne);
-    }else {
-        operandOne = parseInt(operandOne);
-    }
-    if (operandTwo.includes('.')){
-        operandTwo = parseFloat(operandTwo);
-    }else {
-        operandTwo = parseInt(operandTwo);
-    }
+    operandOne.includes('.') ? operandOne = parseFloat(operandOne) : operandOne = parseInt(operandOne);
+    operandTwo.includes('.') ? operandTwo = parseFloat(operandTwo) : operandTwo = parseInt(operandTwo);
     if (operator == '+'){
         return operandOne + operandTwo;
     }else if (operator == '-'){
@@ -64,7 +56,6 @@ for (let row = 0; row < 5; row++){
                     }else {
                         screen.textContent = text;
                     }
-
                 }
                 if (operator == null){
                     operandOne += text.toString();
@@ -80,7 +71,7 @@ for (let row = 0; row < 5; row++){
                     screen.textContent += ' ' + button.id + ' ';
                     if (operator != '' && operandOne != '' && operandTwo != ''){
                         screen.textContent = operate(operandOne, operandTwo, operator);
-                        operandOne = operate(operandOne, operandTwo, operator);
+                        operandOne = screen.textContent;
                         operationMade = true;
                         operandTwo = '';
                         operator = button.id;
@@ -106,16 +97,21 @@ for (let row = 0; row < 5; row++){
                         screen.textContent += ')';
                     }
                     parenthesisNum += 1;
-                    //change this parenthesis thing later or not at all maybe.
                 }else if (button.id == '%'){
                     if (operator == null){
                         operandOne = parseInt(operandOne) / 100;
                         operandOne = operandOne.toString();
-                        console.log(operandOne);
                         screen.textContent = operandOne;
                     }
                 }else if (button.id == 'x'){
                     screen.textContent = screen.textContent.slice(0, -1);
+                } else {
+                    screen.textContent += '.';
+                    if (operandOne != '' && operandTwo == ''){
+                        operandOne += '.';
+                    }else if (operandOne != '' && operandTwo != ''){
+                        operandTwo += '.';
+                    }
                 }
             });
         }

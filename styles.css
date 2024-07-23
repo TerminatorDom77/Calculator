@@ -22,7 +22,7 @@
     flex-wrap: wrap;
     background-color: #6b6b6b;
 }
-p {
+div > p {
     float: right;
     margin-right: 5%;
     font-size: 22pt;

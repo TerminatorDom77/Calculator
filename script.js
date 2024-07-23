@@ -64,7 +64,7 @@ for (let row = 0; row < 5; row++){
                 }
                 if (operator == null){
                     operandOne += text.toString();
-                }else {
+                }else { //if the operator has a value then the user is inputting the 2nd operand
                     operandTwo += text.toString();
                 }
             });
@@ -80,16 +80,13 @@ for (let row = 0; row < 5; row++){
                 } else if(button.id != '=') {
                     screen.textContent += ' ' + button.id + ' ';
                     if (operator != '' && operandOne != '' && operandTwo != ''){
-                        if (parenthesisNum == 0){
-                            screen.textContent = operate(operandOne, operandTwo, operator);
-                            operandOne = screen.textContent;
-                            operationMade = true;
-                            operandTwo = '';
-                            operator = button.id;
-                        }else {
-                            
-                        }
-                    }else {
+                        console.log(operandTwo);
+                        screen.textContent = operate(operandOne, operandTwo, operator);
+                        operandOne = screen.textContent;
+                        operationMade = true;
+                        operandTwo = '';
+                        operator = button.id;
+                }else {
                         operator = button.id;
                     }
                 } else {
@@ -112,8 +109,18 @@ for (let row = 0; row < 5; row++){
                     if (parenthesisNum < 4){
                         if (parenthesisNum % 2 == 0){
                             screen.textContent += '(';
+                            if (operandOne != '' && operandTwo == '' && operator == null){
+                                operandTwo += '(';
+                            } else if (operandOne == ''){
+                                operandOne += '('
+                            }
                         }else {
                             screen.textContent += ')';
+                            if (operandTwo == '' && operator == null){
+                                operandOne += ')';
+                            } else if (operandOne == ''){
+                                operandOne += ')'
+                            }
                         }
                         parenthesisNum += 1;
                     }else {
